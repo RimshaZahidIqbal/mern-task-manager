@@ -6,7 +6,7 @@ const protect = async (req, res, next) => {
     try {
         let token = req.headers.authorization;
         if (token && token.startsWith("Bearer")) {
-            token = token.split("")[1]; // Extract Token 
+            token = token.split(" ")[1]; // Extract Token 
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
             req.user = await User.findById(decoded.id).select("-password");
             next();
@@ -17,4 +17,16 @@ const protect = async (req, res, next) => {
     } catch (err) {
         res.status(401).json({ message: `Token failed ${err.message}` })
     }
+};
+
+// Middle wares for admin only 
+
+const adminOnly = (req, res, next) => {
+    if (req.user && req.user.role == "admin") {
+        next();
+    }
+    else {
+        res.status(403).json({ message: "Access denied, admin only" });
+    }
 }
+module.exports = { protect, adminOnly };
