@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const todoSchema = new mongoose.Schema({
-    text: { text: String, required: true },
+    text: { type: String, required: true },
     completed: { type: Boolean, default: false },
 });
 
@@ -18,4 +18,4 @@ const taskSchema = new mongoose.Schema({
 
 },
     { timestamps: true });
-mongoose.exports = mongoose.model("Task", taskSchema);
+module.exports = mongoose.model("Task", taskSchema);
