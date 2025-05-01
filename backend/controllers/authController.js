@@ -81,7 +81,7 @@ const loginUser = async (req, res) => {
 // @access private (JWT token)
 const updateUserProfile = async (req, res) => {
     try {
-        const user = await User.findById(req.user.id);
+        const user = await User.findById(req.user._id);
         if (!user) {
             if (!user) {
                 return res.status(404).json({ message: "User not found" });
@@ -89,6 +89,7 @@ const updateUserProfile = async (req, res) => {
         }
         user.name = req.body.name || user.name;
         user.email = req.body.email || user.email;
+        user.profileImageUrl = req.body.profileImageUrl || user.profileImageUrl;
         if (req.body.password) {
             const salt = await bcrypt.genSalt(10);
             user.password = await bcrypt.hash(req.body.password, salt);
@@ -98,6 +99,7 @@ const updateUserProfile = async (req, res) => {
             _id: updatedUser._id,
             name: updatedUser.name,
             email: updatedUser.email,
+            profileImageUrl: updatedUser.profileImageUrl,
             role: updatedUser.role,
             token: generateToken(updatedUser._id),
         })
