@@ -7,13 +7,13 @@ const Input = ({ value, onChange, label, placeholder, type }) => {
         setShowPassword(!showPassword);
     }
     return (
-        <>
+        <div className='flex flex-col'>
             <label className='text-[13px] text-slate-800'>{label}</label>
             <div className="input-box">
                 <input
                     type={type == "password" ? showPassword ? "text" : "password" : type}
                     placeholder={placeholder}
-                    className='w-full bg-transparent outline-none rounded  '
+                    className='w-full bg-transparent outline-none'
                     value={value}
                     onChange={(e) => onChange(e)}
                 />
@@ -36,7 +36,7 @@ const Input = ({ value, onChange, label, placeholder, type }) => {
 
                 )}
             </div>
-        </>
+        </div>
     )
 }
 

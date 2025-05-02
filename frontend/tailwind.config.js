@@ -10,7 +10,7 @@ export default {
                 primary: '#1368EC',
             },
             fontFamily: {
-                display: ['"Noto Sans"', 'sans-serif'],
+                display: ['"Poppins"', 'sans-serif'],
             },
         },
     },
