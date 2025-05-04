@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import img from '../../assets/images/login-image.jpg';
-import img1 from '../../assets/images/login-img.jpg';
+import img1 from '../../assets/images/login-img.svg';
 
 const AuthLayout = ({ children }) => {
     const images = [img, img1];
