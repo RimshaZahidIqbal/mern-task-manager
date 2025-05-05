@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useState } from 'react'
 import moment from "moment";
 import { useNavigate } from 'react-router-dom';
 import { IoMdCard } from "react-icons/io"
+import { LuArrowRight } from 'react-icons/lu';
+
 import { useUserAuth } from '../../Hooks/useUserAuth'
 import { UserContext } from '../../context/userContext';
 import { DashboardLayout } from '../../components/layouts';
@@ -9,16 +11,38 @@ import axiosInstance from '../../utils/axiosInstance';
 import { API_PATHS } from '../../utils/apiPaths';
 import InfoCard from '../../components/cards/InfoCard';
 import { addThousandsSeperator } from "../../utils/helper"
-import { LuArrowRight } from 'react-icons/lu';
+
 import TaskListTable from '../../components/TaskListTable';
+import CustomPieChart from '../../components/CustomPieChart';
+import CustomBarChart from '../../components/CustomBarChart';
+
+const COLORS = ['#8d51ff', '#00b8db', '#7bce00'];
 const Dashboard = () => {
     useUserAuth();
     const { user } = useContext(UserContext);
-    const navigate = useNavigate();
-    const [dashboardData, setDashboardData] = useState(null);
-    const [pieChatData, setPieChatData] = useState(null);
-    const [barChartData, setBarChartData] = useState(null);
 
+    const navigate = useNavigate();
+
+    const [dashboardData, setDashboardData] = useState(null);
+    const [pieChartData, setPieChartData] = useState(null);
+    const [barChartData, setBarChartData] = useState([]);
+
+    const prepareChartData = (data) => {
+        const taskDistribution = data?.taskDistribution || null;
+        const taskPriorityLevels = data?.taskPriorityLevels || null;
+        const taskDistributionData = [
+            { status: "Pending", count: taskDistribution?.Pending || 0 },
+            { status: "In Progress", count: taskDistribution?.InProgress || 0 },
+            { status: "Completed", count: taskDistribution?.Completed || 0 },
+        ];
+        setPieChartData(taskDistributionData);
+        const priorityLevelData = [
+            { priority: "Low", count: taskPriorityLevels?.Low || 0 },
+            { priority: "Medium", count: taskPriorityLevels?.Medium || 0 },
+            { priority: "High", count: taskPriorityLevels?.High || 0 },
+        ]
+        setBarChartData(priorityLevelData);
+    };
     const getDashboardData = async () => {
         try {
             const response = await axiosInstance.get(
@@ -26,21 +50,26 @@ const Dashboard = () => {
             );
             if (response.data) {
                 setDashboardData(response.data);
+                prepareChartData(response.data?.charts || null);
             }
         } catch (error) {
             console.error("Error fetching users:", error);
         }
     }
     const onSeeMore = () => {
-        // navigate('/admin/tasks');
+        navigate('/admin/tasks');
     }
+
     useEffect(() => {
         getDashboardData();
         return () => { };
     }, []);
+
     return (
         <DashboardLayout activeMenu="Dashboard">
             <div className='card my-5'>
+
+
                 <div className="">
                     <div className="col-span-3">
                         <h2 className='text-xl md:text-2xl'>Greetings! {user?.name}</h2>
@@ -83,7 +112,32 @@ const Dashboard = () => {
                         color="bg-lime-500"
                     />
                 </div>
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-4 md:my-6">
+                    <div>
+                        <div className='card'>
+                            <div className="flex items-center justify-between">
+                                <h5 className='font-medium'> Task Distribution</h5>
+                            </div>
+                            <CustomPieChart data={pieChartData} colors={COLORS} />
+                        </div>
+                    </div>
+                    <div>
+                        <div className='card'>
+                            <div className="flex items-center justify-between">
+                                <h5 className='font-medium'> Priority Levels</h5>
+                            </div>
+
+                            {Array.isArray(barChartData) && barChartData.length > 0 && (
+                                <>  <CustomBarChart barChartData={barChartData} />
+                                    <pre className='text-xs'>{JSON.stringify(barChartData)}</pre>
+                                </>
+                            )}
+
+
+
+                        </div>
+                    </div>
                     <div className="md:col-span-2">
                         <div className="card">
                             <div className="flex items-center justify-between">
