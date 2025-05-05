@@ -243,13 +243,13 @@ const getDashboardData = async (req, res) => {
         const taskDistributionRaw = await Task.aggregate([
             {
                 $group: {
-                    _id: "status",
+                    _id: "$status",
                     count: { $sum: 1 }
                 },
             },
         ])
         const taskDistribution = taskStatuses.reduce((acc, status) => {
-            const formattedkey = status.replace(/\+/g, ""); // remove spaces from response key 
+            const formattedkey = status.replace(/\s+/g, ""); // remove spaces from response key 
             acc[formattedkey] =
                 taskDistributionRaw.find((item) => item._id === status)?.count || 0;
             return acc;
@@ -257,7 +257,7 @@ const getDashboardData = async (req, res) => {
         taskDistribution["All"] = totalTasks; // add total count to task distribution
 
         const taskPriorities = ["Low", "Medium", "High"];
-        const taskPrioritiesLevelsRaw = await Task.aggregate([
+        const taskPriorityLevelsRaw = await Task.aggregate([
             {
                 $group: {
                     _id: "$priority",
@@ -265,8 +265,8 @@ const getDashboardData = async (req, res) => {
                 },
             },
         ]);
-        const taskPrioritiesLevels = taskPriorities.reduce((acc, priority) => {
-            acc[priority] = taskPrioritiesLevelsRaw.find((item) => item._id == priority)?.count || 0;
+        const taskPriorityLevels = taskPriorities.reduce((acc, priority) => {
+            acc[priority] = taskPriorityLevelsRaw.find((item) => item._id == priority)?.count || 0;
             return acc;
         }, {})
 
@@ -285,7 +285,7 @@ const getDashboardData = async (req, res) => {
             },
             charts: {
                 taskDistribution,
-                taskPrioritiesLevels,
+                taskPriorityLevels,
             },
             recentTasks,
         })
@@ -293,6 +293,7 @@ const getDashboardData = async (req, res) => {
         res.status(500).json({ message: "Server error", error: error.message })
     }
 }
+
 
 // @desc Get all tasks (Admin : all  Users: assigned Tasks)
 // @route GET /api/tasks/
