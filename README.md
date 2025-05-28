@@ -1,5 +1,7 @@
 # Task Management App (MERN Stack)
-A full-featured task management web application built with the MERN stack (MongoDB, Express, React, Node.js). Admins can create, assign, and manage tasks. Users can view their tasks, update progress, and track status.
+A full-featured task management web application built with the MERN stack `(MongoDB, Express, React, Node.js)`. 
+- Admins can create, assign, and manage tasks.
+- Users can view their tasks, update progress, and track status.
 
 ## Tech Stack
 
@@ -43,6 +45,3 @@ npm run dev
 cd ../client
 npm run dev
 ```
-
-<!-- Screenshotss -->
-

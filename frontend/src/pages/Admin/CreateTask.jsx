@@ -8,7 +8,7 @@ import axiosInstance from '../../utils/axiosInstance';
 import { DashboardLayout } from '../../components/layouts';
 import { PRIORITY_DATA } from '../../utils/data';
 import { API_PATHS } from '../../utils/apiPaths';
-import { SelectDropdown } from '../../components/inputs'
+import { SelectDropdown, SelectUsers } from '../../components/inputs'
 const CreateTask = () => {
     const location = useLocation();
     const { taskId } = location.state || {};
@@ -94,16 +94,39 @@ const CreateTask = () => {
                         </div>
                         <div className="grid grid-col-12 gap-12 mt-2">
                             <div className="col-span-6 md:col-span-4">
-                                <label className="text-xs font-medium text-slate-600" htmlFor="priority">Priority</label>
+                                <label className="text-xs font-medium text-slate-600" >Priority</label>
                                 <SelectDropdown
                                     options={PRIORITY_DATA}
-                                    name='priority'
                                     value={taskData.priority}
-                                    onChange={({ target }) =>
-                                        handleValueChange("priority", target.value)}
+                                    onChange={(value) => handleValueChange("priority", value)}
                                     placeholder='Select Priority'
-                                /></div>
+                                />
+                            </div>
+
+                            <div className="col-span-6 md:col-span-4">
+                                <label className="text-xs font-medium text-slate-600" htmlFor="due-date">Due Date</label>
+                                <input
+                                    placeholder='Create App UI'
+                                    className='form-input'
+                                    name='due-date'
+                                    value={taskData.dueDate}
+                                    onChange={({ target }) =>
+                                        handleValueChange("dueDate", target.value)
+                                    }
+                                    type='date'
+                                />
+                            </div>
+                            <div className='col-span-12 md:col-span-3'>
+                                <label className="text-xs font-medium text-slate-600" >Assigned To</label>
+                                <SelectUsers
+                                    selectedUsers={taskData.assignedTo}
+                                    setSelectedUsers={(value) => handleValueChange("assignedTo", value)}
+                                />
+                            </div>
                         </div>
+
+
+
                     </div>
                 </div>
             </div>

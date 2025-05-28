@@ -13,8 +13,7 @@ import InfoCard from '../../components/cards/InfoCard';
 import { addThousandsSeperator } from "../../utils/helper"
 
 import TaskListTable from '../../components/TaskListTable';
-import CustomPieChart from '../../components/CustomPieChart';
-import CustomBarChart from '../../components/CustomBarChart';
+import { CustomPieChart, CustomBarChart } from '../../components/charts';
 
 const COLORS = ['#8d51ff', '#00b8db', '#7bce00'];
 const Dashboard = () => {
