@@ -2,7 +2,9 @@ import { useEffect, useState } from 'react';
 import axiosInstance from '../../utils/axiosInstance';
 import { API_PATHS } from '../../utils/apiPaths';
 import { LuUsers } from 'react-icons/lu';
+import { IoPersonCircleSharp } from "react-icons/io5";
 import Modal from '../Modal';
+
 
 const SelectUsers = ({ selectedUsers, setSelectedUsers }) => {
     const [allUsers, setAllUsers] = useState([]);
@@ -66,36 +68,49 @@ const SelectUsers = ({ selectedUsers, setSelectedUsers }) => {
                 title="Select Users"
             >
                 <div className='space-y-4 h-[60vh] overflow-y-auto'>
-                    {allUsers.map((user) => (
-                        <div
-                            key={user._id}
-                            className='flex items-center gap-4 p-3 border-b border-gray-200'
-                        >
-                            <img
-                                src={user.profileImageUrl || 'https://via.placeholder.com/40'}
-                                alt={user.name}
-                                className='w-10 h-10 rounded-full'
-                            />
-                            <div className="flex-1">
-                                <p className="font-medium text-gray-800 dark:text-white">
-                                    {user.name}
-                                </p>
-                                <p className='text-[13px] text-gray-500'>
-                                    {user.email}
-                                </p>
+                    {allUsers.map((user) => {
+                        const hasImage = user.profileImageUrl && user.profileImageUrl.trim() !== "";
+                        console.log("hasImage", hasImage);
+                        return (
+                            <div
+                                key={user._id}
+                                className='flex items-center gap-4 p-3 border-b border-gray-200'
+                            >
+                                {hasImage ? (
+                                    <img
+                                        src={user.profileImageUrl}
+                                        alt={user.name}
+                                        className='w-10 h-10 rounded-full object-cover object-top'
+                                    />
+                                ) : (
+                                    <IoPersonCircleSharp className='w-10 h-10 text-gray-400' />
+                                )}
+
+                                <div className="flex-1">
+                                    <p className="font-medium text-gray-800 dark:text-white">
+                                        {user.name}
+                                    </p>
+                                    <p className='text-[13px] text-gray-500'>
+                                        {user.email}
+                                    </p>
+                                </div>
+                                <input
+                                    type="checkbox"
+                                    checked={tempSelectedUsers.includes(user._id)}
+                                    onChange={() => toggleUserSelection(user._id)}
+                                    className='w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded-sm outline-none'
+                                />
                             </div>
-                            <input
-                                type="checkbox"
-                                checked={tempSelectedUsers.includes(user._id)}
-                                onChange={() => toggleUserSelection(user._id)}
-                                className='w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded-sm outline-none'
-                            />
-                        </div>
-                    ))}
+                        );
+                    })}
+
                 </div>
-                <div className='flex justify-end mt-4'>
-                    <button onClick={handleAssign} className='card-btn'>
-                        Assign Selected
+                <div className='flex justify-end mt-4 gap-2'>
+                    <button onClick={handleAssign} className='card-btn-fill'>
+                        Done
+                    </button>
+                    <button onClick={() => setIsModalOpen(false)} className='card-btn'>
+                        Cancel
                     </button>
                 </div>
             </Modal>
