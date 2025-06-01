@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Modal = ({ children, isOpen, onClose, title }) => {
-    if (!isOpen) return null;
+    if (!isOpen) return;
 
     return (
         <div className="fixed top-0 left-0 right-0 z-50 flex justify-center items-start w-full h-full bg-black/50 overflow-y-auto py-8">
@@ -12,6 +12,7 @@ const Modal = ({ children, isOpen, onClose, title }) => {
                         {title}
                     </h3>
                     <button
+                        type='button'
                         onClick={onClose}
                         className="text-gray-400 hover:text-gray-900 hover:bg-gray-200 dark:hover:text-white dark:hover:bg-gray-600 rounded-lg w-8 h-8 flex items-center justify-center"
                     >
