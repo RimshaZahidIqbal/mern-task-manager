@@ -4,7 +4,7 @@ import { API_PATHS } from '../../utils/apiPaths';
 import { LuUsers } from 'react-icons/lu';
 import { IoPersonCircleSharp } from "react-icons/io5";
 import Modal from '../Modal';
-
+import AvatarGroup from '../AvatarGroup';
 
 const SelectUsers = ({ selectedUsers, setSelectedUsers }) => {
     const [allUsers, setAllUsers] = useState([]);
@@ -61,6 +61,16 @@ const SelectUsers = ({ selectedUsers, setSelectedUsers }) => {
                 >
                     <LuUsers className='text-xs' /> Add Members
                 </button>
+            )}
+            {selectedUserAvatars.length > 0 && (
+                <div
+                    className='cursor-pointer'
+                    onClick={() => {
+                        setIsModalOpen(true);
+                    }}
+                >
+                    <AvatarGroup avatars={selectedUserAvatars} maxVisible={3} className='text-xs' /> Add Members
+                </div>
             )}
             <Modal
                 isOpen={isModalOpen}
