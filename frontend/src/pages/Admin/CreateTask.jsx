@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 // import toast from 'react-hot-toast';
 import { useNavigate, useLocation } from 'react-router-dom';
 import moment from 'moment';
@@ -8,7 +8,7 @@ import axiosInstance from '../../utils/axiosInstance';
 import { DashboardLayout } from '../../components/layouts';
 import { PRIORITY_DATA } from '../../utils/data';
 import { API_PATHS } from '../../utils/apiPaths';
-import { SelectDropdown, SelectUsers } from '../../components/inputs'
+import { SelectDropdown, SelectUsers, ToDoListInput, AddAttachmnetsInput } from '../../components/inputs'
 const CreateTask = () => {
     const location = useLocation();
     const { taskId } = location.state || {};
@@ -124,15 +124,19 @@ const CreateTask = () => {
                                 />
                             </div>
                         </div>
-                        <div className=''>
-                            <label htmlFor="" className=''> TODO CheckList</label>
+                        <div className='mt-3'>
+                            <label htmlFor="" className='text-xs font-medium text-slate-600'> TODO CheckList</label>
                             <ToDoListInput
                                 toDoList={taskData?.todoCheckList}
-                                setToList={(value) => {
-                                    handleValueChange("toDoCheckList", value)
+                                setToDoList={(value) => {
+                                    handleValueChange("todoCheckList", value)
                                 }}
-                            ></ToDoListInput>
+                            />
                         </div>
+                        <div className="">
+                            <label htmlFor="" className="">Add Attachments</label>
+                        </div>
+                        <AddAttachmnetsInput />
                     </div>
                 </div>
             </div>

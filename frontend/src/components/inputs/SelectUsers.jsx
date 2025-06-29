@@ -80,7 +80,6 @@ const SelectUsers = ({ selectedUsers, setSelectedUsers }) => {
                 <div className='space-y-4 h-[60vh] overflow-y-auto'>
                     {allUsers.map((user) => {
                         const hasImage = user.profileImageUrl && user.profileImageUrl.trim() !== "";
-                        console.log("hasImage", hasImage);
                         return (
                             <div
                                 key={user._id}
