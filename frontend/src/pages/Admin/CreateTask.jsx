@@ -133,10 +133,12 @@ const CreateTask = () => {
                                 }}
                             />
                         </div>
-                        <div className="">
-                            <label htmlFor="" className="">Add Attachments</label>
+                        <div className="mt-3">
+                            <label className="text-xs font-medium text-slate-600">Add Attachments</label>
                         </div>
-                        <AddAttachmnetsInput />
+                        <AddAttachmnetsInput
+                            attachments={taskData?.attachments}
+                            setAttachments={(value) => handleValueChange("attachments", value)} />
                     </div>
                 </div>
             </div>
