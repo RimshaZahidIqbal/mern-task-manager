@@ -4,10 +4,10 @@ import {
   Route,
 } from 'react-router-dom'
 
+import { ToastContainer } from 'react-toastify'
 import { Login, Register } from './pages/Auth';
 import { UserDashboard, MyTasks, ViewTaskDetails } from './pages/User';
 import { CreateTask, Dashboard, ManageTasks, ManageUsers } from './pages/Admin';
-
 import PrivateRoute from './routes/PrivateRoute.jsx'
 import UserProvider from './context/userContext.jsx';
 function App() {
@@ -32,6 +32,8 @@ function App() {
           </Route>
         </Routes>
       </Router >
+      <ToastContainer position="top-right" />
+
     </UserProvider>
   )
 }

@@ -9,6 +9,7 @@ import { DashboardLayout } from '../../components/layouts';
 import { PRIORITY_DATA } from '../../utils/data';
 import { API_PATHS } from '../../utils/apiPaths';
 import { SelectDropdown, SelectUsers, ToDoListInput, AddAttachmnetsInput } from '../../components/inputs'
+import { toast } from 'react-toastify';
 const CreateTask = () => {
     const location = useLocation();
     const { taskId } = location.state || {};
@@ -43,10 +44,59 @@ const CreateTask = () => {
         })
     };
     // Create Task 
-    const createTask = async () => { };
+    const createTask = async () => {
+        setLoading(true);
+        try {
+            const todolist = taskData.todoCheckList?.map((item) => ({
+                text: item,
+                completed: false,
+            }));
+            const response = await axiosInstance.post(API_PATHS.TASKS.CREATE_TASK, {
+                ...taskData,
+                dueDate: new Date(taskData.dueDate).toISOString(),
+                todoCheckList: todolist,
+            });
+            toast.success("Task Created");
+            clearData();
+        } catch (error) {
+            console.error("Error Creating Task", error);
+            setLoading(false);
+        }
+        finally {
+            setLoading(false);
+        }
+    };
     // create Task
     const updateTask = async () => { };
-    const handleSubmit = async () => { };
+    const handleSubmit = async () => {
+        setError(null);
+        // Input Validation
+        if (!taskData.title.trim()) {
+            setError("Title is required");
+            return;
+        }
+        if (!taskData.description.trim()) {
+            setError("Description is required");
+            return;
+        }
+        if (!taskData.dueDate) {
+            setError("Due Date is required");
+            return;
+        }
+        if (taskData.assignedTo?.length == 0) {
+            setError("Task not assigned to any member");
+            return;
+        }
+        if (taskData.todoCheckList?.length == 0) {
+            setError("Add atleast one todo task");
+            return;
+        }
+        if (taskId) {
+            updateTask();
+            return;
+        }
+        createTask();
+    };
     // delete Task
     const deleteTask = async () => { };
 
@@ -135,10 +185,24 @@ const CreateTask = () => {
                         </div>
                         <div className="mt-3">
                             <label className="text-xs font-medium text-slate-600">Add Attachments</label>
+
+                            <AddAttachmnetsInput
+                                attachments={taskData?.attachments}
+                                setAttachments={(value) => handleValueChange("attachments", value)} />
                         </div>
-                        <AddAttachmnetsInput
-                            attachments={taskData?.attachments}
-                            setAttachments={(value) => handleValueChange("attachments", value)} />
+                        {error && (
+                            <p className='text-xs font-medium text-red-500 mt-5'>{error}</p>
+                        )}
+                        <div className="flex justify-end mt-7">
+                            <button
+                                className="add-btn"
+                                onClick={handleSubmit}
+                                disabled={loading}
+                            >
+                                {taskId ? "UPDATE TASK" : "CREATE TASK"}
+                            </button>
+                        </div>
+
                     </div>
                 </div>
             </div>

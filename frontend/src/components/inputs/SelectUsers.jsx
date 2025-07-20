@@ -77,7 +77,7 @@ const SelectUsers = ({ selectedUsers, setSelectedUsers }) => {
                 onClose={() => setIsModalOpen(false)}
                 title="Select Users"
             >
-                <div className='space-y-4 h-[60vh] overflow-y-auto'>
+                <div className='space-y-4 h-[60vh] overflow-y-auto '>
                     {allUsers.map((user) => {
                         const hasImage = user.profileImageUrl && user.profileImageUrl.trim() !== "";
                         return (
@@ -96,7 +96,7 @@ const SelectUsers = ({ selectedUsers, setSelectedUsers }) => {
                                 )}
 
                                 <div className="flex-1">
-                                    <p className="font-medium text-gray-800 dark:text-white">
+                                    <p className="font-medium text-gray-800 ">
                                         {user.name}
                                     </p>
                                     <p className='text-[13px] text-gray-500'>
