@@ -128,8 +128,8 @@ const Dashboard = () => {
                             </div>
 
                             {Array.isArray(barChartData) && barChartData.length > 0 && (
-                                <>  <CustomBarChart barChartData={barChartData} />
-                                    <pre className='text-xs'>{JSON.stringify(barChartData)}</pre>
+                                <>  <CustomBarChart data={barChartData} />
+                                    <pre className='text-xs'></pre>
                                 </>
                             )}
 
